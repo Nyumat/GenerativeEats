@@ -36,9 +36,7 @@ router.post("/", async (req, res) => {
     });
 
     const recipe = response.data.choices[0].text;
-    console.log("Recipe: ", recipe);
     const recipeArray = recipe.split("\n");
-    console.log("Before Parsing: ", recipeArray);
 
     let title = "";
     for (let i = 0; i < recipeArray.length; i++) {
@@ -88,8 +86,6 @@ router.post("/", async (req, res) => {
     let newIngredientsList = mutateArray(ingredientsList, "Ingredients:");
     let newInstructions = mutateArray(instructions, "Instructions:");
 
-    console.log("After Parsing: ", title, newIngredientsList, newInstructions);
-
     res.send({
       title: title,
       ingredients: newIngredientsList,
@@ -98,10 +94,15 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     if (error.response) {
-      console.log(error.response.status);
-      console.log(error.response.data);
+      res.send({
+        error: error.response.data,
+        status: error.response.status,
+      });
     } else {
-      console.log(error.message);
+      res.send({
+        error: error,
+        status: 500,
+      });
     }
     res.send({
       recipe: "Sorry, we couldn't find a recipe for you.",

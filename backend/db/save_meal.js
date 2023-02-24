@@ -18,11 +18,14 @@ router.post("/save", async (req, res) => {
     const unsplashResponse = await axios.get(
       `https://api.unsplash.com/search/photos?query=${encodedTitle}&client_id=${process.env.UNSPLASH_ACCESS}`
     );
-        let randomIndex = Math.floor(Math.random() * unsplashResponse.data.results.length);
-    const responseImage = unsplashResponse.data.results[randomIndex].urls.regular;
+    let randomIndex = Math.floor(
+      Math.random() * unsplashResponse.data.results.length
+    );
+    const responseImage =
+      unsplashResponse.data.results[randomIndex].urls.regular;
     image = responseImage;
   } catch (error) {
-    console.log("Error: ", error);
+    res.status(500).json({ message: error.message });
   }
 
   try {
@@ -85,7 +88,9 @@ router.post("/save", async (req, res) => {
             });
           })
           .catch((error) => {
-            console.log(error);
+            res.send({
+              message: "Error generating tags",
+            });
           })
           .finally(async () => {
             const recipe = await Meal.create({
@@ -104,7 +109,9 @@ router.post("/save", async (req, res) => {
           });
       })
       .catch((error) => {
-        console.log(error);
+        res.send({
+          error: error,
+        });
       });
   } catch (error) {
     res.status(500).json({ message: error.message });
