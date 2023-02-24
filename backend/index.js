@@ -6,6 +6,7 @@ import tracker from "./middleware/tracker.js";
 import recipe from "./controllers/recipe.js";
 import meal from "./controllers/meal.js";
 import save_meal from "./db/save_meal.js";
+import get_saved from "./db/get_saved.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(tracker);
 app.use("/recipe", recipe);
 app.use("/gen/meal", meal);
 app.use("/meal", save_meal);
+app.use("/saved", get_saved);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

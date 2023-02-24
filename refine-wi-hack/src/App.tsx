@@ -1,24 +1,22 @@
 import React from "react";
-
-import { ChakraProvider } from "@chakra-ui/react";
-import { extendTheme } from "@chakra-ui/react";
-import { ColorModeScript } from "@chakra-ui/react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "pages/Home";
+import Navbar from "components/UI/Navbar";
+import Generate from "pages/Generate";
+import SavedRecipes from "pages/SavedRecipes";
 
 function App() {
-  const chakraTheme = extendTheme({
-    colors: {
-      brand: {
-        100: "#f7fafc",
-        900: "#1a202c",
-      },
-    },
-  });
-
   return (
-    <ChakraProvider theme={chakraTheme}>
-      <ColorModeScript initialColorMode={chakraTheme.config.initialColorMode} />
-      
-    </ChakraProvider>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/recipes" element={<SavedRecipes />} />
+          <Route path="/generate" element={<Generate />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
