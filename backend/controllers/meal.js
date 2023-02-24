@@ -1,33 +1,27 @@
 import { Router } from "express";
 import { mutateArray, openai } from "../lib/index.js";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const router = Router();
 
 router.post("/", async (req, res) => {
-  const ingredients = req.body.ingredients;
+  const meal = req.body.meal;
 
-  const s = ingredients
-    .map((ingredient) => {
-      return ingredient + "\n";
-    })
-    .join("");
+  const s = meal;
 
   const prompt = `
-      Write a recipe based on these ingredients and instructions:
-      The first line should be the title of the recipe with a hader "Title:"
+  
+      Write a instructions based on this given meal:
+      
+      The first line should be the title of the recipe with a header "Title:"
       The title should be descriptive in one sentence and on the same line as the header.
-      The second line should be the list of ingredients.
-      The third line should be the instructions.
+      The second line should be the list of ingredients required. Make sure each of the ingredients are on new lines.
+      The third line should be the instructions for creating the meal.
 
-      Each line should have a header, like "Ingredients:" or "Title".
+      Each line should have a header, like "Ingredients:" or "Title:" or "Instructions:".
+
+      Meal: ${s}
 
       Ingredients:
-      ${s}
-
-      Instructions:
       `;
 
   try {
@@ -42,8 +36,8 @@ router.post("/", async (req, res) => {
     });
 
     const recipe = response.data.choices[0].text;
+    console.log("Recipe: ", recipe);
     const recipeArray = recipe.split("\n");
-
     console.log("Before Parsing: ", recipeArray);
 
     let title = "";

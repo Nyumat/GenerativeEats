@@ -1,3 +1,9 @@
+
+import dotenv from "dotenv";
+import { OpenAIApi, Configuration } from "openai";
+
+dotenv.config();
+
 const mutateArray = (array, header) => {
   let localArray = array;
   for (let i = 0; i < array.length; i++) {
@@ -12,4 +18,9 @@ const mutateArray = (array, header) => {
   return localArray;
 };
 
-export default mutateArray;
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
+
+export { mutateArray, openai };
