@@ -19,9 +19,6 @@ const store = configureStore({
       reducer: reducers,
       devTools: true,
       middleware: [thunkMiddleware]
-
-
-
 });
 
 const persistor = persistStore(store);

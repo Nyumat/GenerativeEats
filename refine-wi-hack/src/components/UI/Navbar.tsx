@@ -14,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+import { FiAlignJustify } from "react-icons/fi";
 import { loadSavedRecipes } from "redux/slices/appSlice";
 import { BsMoon, BsSun } from "react-icons/bs";
 
@@ -39,7 +40,7 @@ export default function Navbar() {
           >
             <p>GenerativeEats</p>
 
-            <button
+            <span
               style={{
                 marginLeft: "25px",
               }}
@@ -50,7 +51,7 @@ export default function Navbar() {
               ) : (
                 <BsSun size={30} />
               )}
-            </button>
+            </span>
           </Center>
 
           <Flex alignItems={"center"} gap={5}>
@@ -59,16 +60,11 @@ export default function Navbar() {
                 as={IconButton}
                 aria-label="Options"
                 icon={
-                  <button
-                    style={{
-                      border: "1px solid black",
-                      borderRadius: "5px",
-                      padding: "5px",
-                      marginRight: "10px",
-                    }}
-                  >
-                    Menu
-                  </button>
+                  <FiAlignJustify
+                    size={30}
+                    style={{ transform: "translateX(-25px)" }}
+                    color={useColorModeValue("black", "white")}
+                  />
                 }
                 variant="ghost"
               />

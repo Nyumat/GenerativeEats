@@ -20,7 +20,7 @@ const Home = () => {
   const motionFlyInAndGrow3 = {
     initial: { opacity: 0, y: -0, x: -1700, scale: 0.5 },
     animate: { opacity: 1, y: 0, x: 0, rotate: 0, scale: 1 },
-    transition: { type: "linear", duration: 3.5, delay: 1.5 },
+    transition: { type: "linear", duration: 2.5, delay: 1.0 },
   };
 
   return (

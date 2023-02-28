@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Text, Center, Button, Box, useColorModeValue } from "@chakra-ui/react";
+import { Text, Center } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectSavedRecipes,
@@ -11,7 +11,7 @@ import RecipeCard from "components/UI/RecipeCard";
 
 const SavedRecipes = () => {
   const dispatch = useDispatch();
-  dispatch({ type: "app/loadSavedRecipes" });
+  dispatch(loadSavedRecipes() as any);
   const riseAndFadeIn = {
     initial: { opacity: 0, y: -100 },
     animate: { opacity: 1, y: 0 },
@@ -37,13 +37,12 @@ const SavedRecipes = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        width: "100%",
-        marginLeft: "25px",
+        width: "100vw",
       }}
     >
       <motion.div {...riseAndFadeIn}>
         <Center>
-          <Text fontSize="6xl" fontWeight="bold">
+          <Text fontSize="4xl" fontWeight="bold" py={16}>
             Your Saved Recipes
           </Text>
         </Center>
@@ -52,11 +51,15 @@ const SavedRecipes = () => {
       <motion.div
         {...fadeAndBounceIn}
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr 1fr",
-          gridGap: "1rem",
+          display: "flex",
+          flex: 1,
+          gap: "36px",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "center",
           width: "100%",
-          padding: "1rem",
+          padding: "10px",
         }}
       >
         {savedRecipes.map((recipe: any) => (
