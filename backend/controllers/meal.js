@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
     let i = 0;
 
     while (i < recipeArray.length) {
-      if (recipeArray[i].includes("Ingredients:")) {
+      if (recipeArray[i].includes(" ")) {
         start = true;
         i++;
       }

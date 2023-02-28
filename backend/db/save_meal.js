@@ -12,17 +12,14 @@ var image = "n/a";
 router.post("/save", async (req, res) => {
   const { title, ingredients, instructions } = req.body;
 
-  // make a request ot the unsplash api to get query the image of the meal
   try {
     const encodedTitle = encodeURI(title);
     const unsplashResponse = await axios.get(
       `https://api.unsplash.com/search/photos?query=${encodedTitle}&client_id=${process.env.UNSPLASH_ACCESS}`
     );
-    let randomIndex = Math.floor(
-      Math.random() * unsplashResponse.data.results.length
-    );
+
     const responseImage =
-      unsplashResponse.data.results[randomIndex].urls.regular;
+      unsplashResponse.data.results[0].urls.regular;
     image = responseImage;
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -32,7 +29,6 @@ router.post("/save", async (req, res) => {
     var description;
     let tags;
 
-    //   backend needs to generate an image, description, and tags
     const getDescriptionPrompt = `
             Write a 2 sentence long description for this recipe.
 
