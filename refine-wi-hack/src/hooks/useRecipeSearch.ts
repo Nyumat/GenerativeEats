@@ -8,6 +8,7 @@ interface useRecipeSearchProps {
 const useRecipeSearch = ({ userIngredients }: useRecipeSearchProps) => {
   const [recipes, setRecipes] = React.useState<any>([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   React.useMemo(() => {
     console.log("userIngredients", userIngredients);
@@ -23,21 +24,53 @@ const useRecipeSearch = ({ userIngredients }: useRecipeSearchProps) => {
       return;
     }
 
-    const fetchRecipes = async () => {
+    let ignore = false;
+    const controller = new AbortController();
+
+    async function fetchRecipes() {
       setIsLoading(true);
-      const response = await axios.post("http://localhost:8080/recipe", {
-        ingredients: userIngredients,
-      });
-      setRecipes(response.data);
-      setIsLoading(false);
-    };
+      let data;
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/recipe",
+          { ingredients: userIngredients },
+          { signal: controller.signal }
+        );
+        if (response.status !== 200) {
+          throw new Error("Failed to fetch.");
+        } else {
+          data = response.data;
+        }
+      } catch (err) {
+        if (err instanceof DOMException) {
+          console.log("HTTP request aborted");
+        } else {
+          setError(true);
+          throw err;
+        }
+      }
+
+      if (!ignore) {
+        setIsLoading(false);
+        setRecipes(data);
+      }
+
+    }
+
     if (userIngredients.length > 0) {
       fetchRecipes();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    return () => {
+      ignore = true;
+      setIsLoading(false);
+      isMounted = false;
+      controller.abort();
+    };
+
   }, [userIngredients]);
 
-  return { recipes, isLoading };
+  return { recipes, isLoading, error };
 };
 
 export default useRecipeSearch;
